@@ -101,6 +101,8 @@ class ilObjTest extends ilObject implements ilMarkSchemaAware
     protected ilCtrlInterface $ctrl;
     protected Refinery $refinery;
     protected ilSetting $settings;
+    protected ilGlobalTemplateInterface $mainTemplate;
+    protected ilLanguage $language;
     protected ilBenchmark $bench;
     protected ilTestParticipantAccessFilterFactory $participant_access_filter;
     protected ?ilObjTestMainSettings $main_settings = null;
@@ -132,6 +134,8 @@ class ilObjTest extends ilObject implements ilMarkSchemaAware
         $this->refinery = $DIC['refinery'];
         $this->settings = $DIC['ilSetting'];
         $this->bench = $DIC['ilBench'];
+        $this->language = $DIC->language();
+        $this->mainTemplate = $DIC->ui()->mainTemplate();
         $this->testrequest = $DIC->test()->internal()->request();
         $this->component_repository = $DIC['component.repository'];
         $this->component_factory = $DIC['component.factory'];
@@ -2700,18 +2704,23 @@ class ilObjTest extends ilObject implements ilMarkSchemaAware
                         $questionsequence = unserialize($seqrow["sequence"]);
 
                         foreach ($questionsequence as $sidx => $seq) {
-                            $data->getParticipant($active_id)->addQuestion(
-                                $questionsbysequence[$seq]['original_id'] ?? 0,
-                                $questionsbysequence[$seq]['question_fi'],
-                                $questionsbysequence[$seq]['points'],
-                                $sidx + 1,
-                                $seqrow['pass']
-                            );
+                            if(array_key_exists($seq, $questionsbysequence)) {
+                                $data->getParticipant($active_id)->addQuestion(
+                                    $questionsbysequence[$seq]['original_id'] ?? 0,
+                                    $questionsbysequence[$seq]['question_fi'],
+                                    $questionsbysequence[$seq]['points'],
+                                    $sidx + 1,
+                                    $seqrow['pass']
+                                );
 
-                            $data->addQuestionTitle(
-                                $questionsbysequence[$seq]["question_fi"],
-                                $questionsbysequence[$seq]["title"]
-                            );
+                                $data->addQuestionTitle(
+                                    $questionsbysequence[$seq]["question_fi"],
+                                    $questionsbysequence[$seq]["title"]
+                                );
+                            } else {
+                                $this->mainTemplate->setOnScreenMessage("failure", $this->language->txt("database_tst_sequence_invalid"), true);
+                            }
+
                         }
                     }
                 }
