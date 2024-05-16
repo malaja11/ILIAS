@@ -602,6 +602,7 @@ assessment#:#create_gaps#:#Create and Refresh Gaps
 assessment#:#create_new#:#Create New
 assessment#:#customstyle#:#Custom Style
 assessment#:#dashboard_tab#:#Participants
+assessment#:#database_tst_sequence_invalid#:#The database structure appears to be broken. Please contact an admin.
 assessment#:#definition#:#Definition
 assessment#:#definition_image#:#Definition Image
 assessment#:#definition_text#:#Definition Text

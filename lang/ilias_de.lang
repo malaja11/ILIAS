@@ -602,6 +602,7 @@ assessment#:#create_gaps#:#Lücken erzeugen und aktualisieren
 assessment#:#create_new#:#Erstelle neue
 assessment#:#customstyle#:#Eigenes Stylesheet
 assessment#:#dashboard_tab#:#Teilnehmer
+assessment#:#database_tst_sequence_invalid#:#Die Datenbankstruktur scheint fehlerhaft zu sein. Bitte melde dich bei einem Admin.
 assessment#:#definition#:#Definition
 assessment#:#definition_image#:#Bild
 assessment#:#definition_text#:#Text
