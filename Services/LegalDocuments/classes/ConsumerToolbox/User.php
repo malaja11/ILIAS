@@ -144,6 +144,11 @@ class User
         return $this->user;
     }
 
+    public function isRoot(): bool
+    {
+        return $this->user->login === 'root';
+    }
+
     private function authMode(): string
     {
         $auth_mode = $this->user->getAuthMode();

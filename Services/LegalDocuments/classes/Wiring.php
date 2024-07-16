@@ -36,6 +36,8 @@ use ILIAS\LegalDocuments\Value\Target;
 use ILIAS\LegalDocuments\Repository\DatabaseDocumentRepository as DocumentRepository;
 use ILIAS\LegalDocuments\Repository\DatabaseHistoryRepository as HistoryRepository;
 use ILIAS\Refinery\Constraint;
+use ILIAS\TermsOfService\PublicApi;
+use ILIAS\TermsOfService\PublicApiInterface;
 use ILIAS\UI\Component\MainControls\Footer;
 use ilSession;
 use ilDashboardGUI;
@@ -125,6 +127,10 @@ class Wiring implements UseSlot
         return $this->addTo('use-soap-api', $constraint);
     }
 
+    public function setPublicApi(PublicApiInterface $api): UseSlot
+    {
+        return $this->addTo('public-api', $api);
+    }
     public function hasDocuments(array $content_as_component = [], ?SelectionMap $available_conditions = null): self
     {
         $available_conditions = $available_conditions ?? new SelectionMap();

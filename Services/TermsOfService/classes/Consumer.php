@@ -73,7 +73,8 @@ class Consumer implements ConsumerInterface
                     ->onSelfRegistration($blocks->slot()->selfRegistration($user, $build_user))
                     ->hasOnlineStatusFilter($blocks->slot()->onlineStatusFilter($this->usersWhoDidntAgree($this->container->database())))
                     ->hasUserManagementFields($blocks->userManagementAgreeDateField($build_user, 'tos_agree_date', 'tos'))
-                    ->canReadInternalMails($blocks->slot()->canReadInternalMails($build_user));
+                    ->canReadInternalMails($blocks->slot()->canReadInternalMails($build_user))
+                    ->setPublicApi(new PublicApi($user));
     }
 
     private function userHasWithdrawn(): void

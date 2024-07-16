@@ -20,6 +20,7 @@ declare(strict_types=1);
 
 namespace ILIAS\LegalDocuments\test;
 
+use ILIAS\LegalDocuments\ConsumerToolbox\User;
 use ILIAS\LegalDocuments\Provide\ProvideHistory;
 use ILIAS\LegalDocuments\Provide\ProvidePublicPage;
 use ILIAS\LegalDocuments\Provide\ProvideDocument;
@@ -27,6 +28,8 @@ use ILIAS\LegalDocuments\Provide\ProvideWithdrawal;
 use ILIAS\LegalDocuments\test\ContainerMock;
 use ILIAS\DI\Container;
 use ILIAS\LegalDocuments\Internal;
+use ILIAS\TermsOfService\DefaultPublicApi;
+use ILIAS\TermsOfService\PublicApi;
 use PHPUnit\Framework\TestCase;
 use ILIAS\LegalDocuments\Provide;
 use ilCtrl;
@@ -98,5 +101,25 @@ class ProvideTest extends TestCase
     public function testId(): void
     {
         $this->assertSame('foo', (new Provide('foo', $this->mock(Internal::class), $this->mock(Container::class)))->id());
+    }
+
+    public function testPublicApiWhenRegistered(): void
+    {
+        $container = $this->mockTree(Container::class, ['ctrl' => $this->mock(ilCtrl::class)]);
+
+        $user = $this->mock(User::class);
+
+        $instance = new Provide('foo', $this->mockMethod(Internal::class, 'get', ['public-api'], new PublicApi($user)), $container);
+
+        $this->assertInstanceOf(PublicApi::class, $instance->publicApi());
+    }
+
+    public function testPublicApiWhenNotRegistered(): void
+    {
+        $container = $this->mockTree(Container::class, ['ctrl' => $this->mock(ilCtrl::class)]);
+
+        $instance = new Provide('foo', $this->mockMethod(Internal::class, 'get', ['public-api'], null), $container);
+
+        $this->assertInstanceOf(DefaultPublicApi::class, $instance->publicApi());
     }
 }

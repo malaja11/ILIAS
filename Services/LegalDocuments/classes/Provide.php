@@ -26,6 +26,7 @@ use ILIAS\LegalDocuments\Provide\ProvidePublicPage;
 use ILIAS\LegalDocuments\Provide\ProvideDocument;
 use ILIAS\LegalDocuments\Provide\ProvideHistory;
 use ILIAS\LegalDocuments\Provide\ProvideWithdrawal;
+use ILIAS\TermsOfService\DefaultPublicApi;
 
 class Provide
 {
@@ -66,6 +67,14 @@ class Provide
     public function allowEditing(): self
     {
         return new self($this->id, $this->internal, $this->container, 'writable-document');
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function publicApi()
+    {
+        return $this->internal->get('public-api', $this->id) ?? new DefaultPublicApi();
     }
 
     public function id(): string

@@ -29,6 +29,8 @@ use ILIAS\LegalDocuments\ConsumerSlots\WithdrawProcess;
 use ILIAS\LegalDocuments\test\ContainerMock;
 use ILIAS\LegalDocuments\Map;
 use ILIAS\LegalDocuments\SlotConstructor;
+use ILIAS\TermsOfService\PublicApi;
+use ILIAS\TermsOfService\PublicApiInterface;
 use PHPUnit\Framework\TestCase;
 use ILIAS\LegalDocuments\Wiring;
 use ILIAS\LegalDocuments\SelectionMap;
@@ -190,5 +192,15 @@ class WiringTest extends TestCase
     {
         $map = $this->mock(Map::class);
         $this->assertSame($map, (new Wiring($this->mock(SlotConstructor::class), $map))->map());
+    }
+
+    public function testSetPublicApi(): void
+    {
+        $map = $this->mock(Map::class);
+        $object = $this->mock(PublicApiInterface::class);
+        $map->expects($this->once())->method('add')->with('public-api', $object)->willReturn($map);
+
+        $instance = new Wiring($this->mock(SlotConstructor::class), $map);
+        $this->assertSame($map, $instance->setPublicApi($object)->map());
     }
 }
